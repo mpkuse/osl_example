@@ -39,7 +39,7 @@ bool myKeyBoardEventHandler::handle(  const osgGA::GUIEventAdapter& ea, osgGA::G
 
 int main()
 {
-    osg::Node *bike = osgDB::readNodeFile( "mesh/road_bike.3ds" );
+    osg::Node *bike = osgDB::readNodeFile( "mesh/earth/earth.obj" );
 
     osg::Group * root = new osg::Group();
 
@@ -105,7 +105,7 @@ int main()
     osgViewer::Viewer viewer;
     viewer.setUpViewInWindow( 50, 50, 320, 320 );
     viewer.setSceneData( root );
-//    viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+    viewer.setCameraManipulator(new osgGA::TrackballManipulator);
     viewer.realize();
 
 //    return viewer.run();

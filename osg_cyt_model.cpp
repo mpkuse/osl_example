@@ -4,7 +4,9 @@
 #include <osg/Geometry>
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
+
 #include <osgViewer/Viewer>
+#include <osgViewer/CompositeViewer>
 
 #include <osg/PositionAttitudeTransform>
 #include <osgGA/TrackballManipulator>
@@ -27,7 +29,10 @@ int main()
     osg::Node * cytBuilding = osgDB::readNodeFile( "model/level_2_0_0.obj");
 
     osg::Group * root = new osg::Group();
-    root->addChild( cytBuilding );
+    osg::PositionAttitudeTransform * scenePAT = new osg::PositionAttitudeTransform();
+    scenePAT->setAttitude(osg::Quat(osg::DegreesToRadians(-90.0), osg::Vec3(1,0,0) ) );
+    root->addChild(scenePAT);
+    scenePAT->addChild( cytBuilding );
     root->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::ON );
     root->getOrCreateStateSet()->setMode( GL_LIGHT0, osg::StateAttribute::ON );
     root->getOrCreateStateSet()->setMode( GL_LIGHT1, osg::StateAttribute::ON );
@@ -70,6 +75,7 @@ int main()
     osgViewer::Viewer viewer;
     viewer.setLightingMode(osg::View::HEADLIGHT);
 //    viewer.setUpViewInWindow( 50, 50, 320, 320 );
+
     viewer.setSceneData( root );
     viewer.realize();
 //    viewer.setCameraManipulator(new osgGA::TerrainManipulator());
@@ -92,7 +98,7 @@ int main()
         cout << "viewMatrix " <<  viewer.getCamera()->getViewMatrix() << endl;
         cout << "projectionMatix " <<  viewer.getCamera()->getProjectionMatrix() << endl;
 //        cout << "projectionMatix " <<  viewer.getCamera()->getViewport()->get << endl;
-
+        cout << "Frame number: " <<  viewer.getFrameStamp()->getReferenceTime() << std::endl;
 
         myCameraMatrix.makeTranslate(c,-40.f,0);
 ////        myCameraMatrix.makeRotate();
