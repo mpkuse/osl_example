@@ -26,11 +26,15 @@ using namespace std;
 
 int main()
 {
+    osg::DisplaySettings::instance()->setStereoMode( osg::DisplaySettings::ANAGLYPHIC );
+    osg::DisplaySettings::instance()->setEyeSeparation( 0.05f );
+    osg::DisplaySettings::instance()->setStereo( true );
+
     osg::Node * cytBuilding = osgDB::readNodeFile( "model/level_2_0_0.obj");
 
     osg::Group * root = new osg::Group();
     osg::PositionAttitudeTransform * scenePAT = new osg::PositionAttitudeTransform();
-    scenePAT->setAttitude(osg::Quat(osg::DegreesToRadians(-90.0), osg::Vec3(1,0,0) ) );
+//    scenePAT->setAttitude(osg::Quat(osg::DegreesToRadians(90.0), osg::Vec3(1,0,0) ) );
     root->addChild(scenePAT);
     scenePAT->addChild( cytBuilding );
     root->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::ON );
@@ -61,6 +65,7 @@ int main()
 
 
 
+
     // PAT
     osg::PositionAttitudeTransform * lightPAT = new osg::PositionAttitudeTransform();
     lightPAT->setPosition( osg::Vec3(0,-200,0));
@@ -79,7 +84,7 @@ int main()
     viewer.setSceneData( root );
     viewer.realize();
 //    viewer.setCameraManipulator(new osgGA::TerrainManipulator());
-//    return viewer.run();
+    return viewer.run();
 
 
 //    viewer.getCamera()->setProjectionMatrixAsPerspective(60., 1., 0.5, 10000 );
@@ -88,6 +93,7 @@ int main()
     viewer.getCamera()->setViewMatrix(myCameraMatrix);
     float c=-20., d=-200.;
     int a=0;
+
 
 
 
@@ -100,7 +106,7 @@ int main()
 //        cout << "projectionMatix " <<  viewer.getCamera()->getViewport()->get << endl;
         cout << "Frame number: " <<  viewer.getFrameStamp()->getReferenceTime() << std::endl;
 
-        myCameraMatrix.makeTranslate(c,-40.f,0);
+        myCameraMatrix.makeTranslate(c,-90.f,0);
 ////        myCameraMatrix.makeRotate();
         viewer.getCamera()->setViewMatrix(osg::Matrixd::inverse(myCameraMatrix));
 
